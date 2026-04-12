@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"C:/Users/Kapil Lohani/Desktop/code/projects/task-to-api/.env\"*)",
+      "Bash(npx prisma:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"require\\('@google/generative-ai'\\)\")",
+      "Bash(command -v node)",
+      "Bash(/C/Program Files/nodejs/npm.cmd install:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(powershell:*)"
+    ]
+  }
+}

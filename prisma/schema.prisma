@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  geminiApiKey  String
+  createdAt     DateTime @default(now())
+  agents        Agent[]
+
+  @@index([email])
+  @@map("users")
+}
+
+model Agent {
+  id            String   @id @default(cuid())
+  name          String
+  task          String
+  temperature   Float
+  inputSchema   String
+  outputSchema  String
+  method        String
+  token         String   @unique
+  createdAt     DateTime @default(now())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([name])
+  @@map("agents")
+}
