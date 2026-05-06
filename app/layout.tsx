@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/app/auth";
+import { ServiceWorkerRegister } from "./sw-register";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,6 +39,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SessionProvider session={session}>{children}</SessionProvider>
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
