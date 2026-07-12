@@ -29,7 +29,7 @@ function Toggle({
       aria-checked={checked}
       disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full border-2 border-black transition-colors focus:outline-none focus:ring-2 focus:ring-black ${
+      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-black transition-colors focus:outline-none focus:ring-2 focus:ring-black ${
         checked ? "bg-green-400" : "bg-white"
       } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
     >
