@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/db";
 import { GeminiService } from "@/lib/gemini";
+import { openMcpSession, withTimeout } from "@/lib/mcp-runtime";
 import { Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
 
-type AgentWithUser = Prisma.AgentGetPayload<{ include: { user: true } }>;
+type AgentWithUser = Prisma.AgentGetPayload<{
+  include: { user: true; mcpServers: true };
+}>;
 type RouteParams = { params: Promise<{ agentId: string }> };
 type AuthorizedAgentResult =
   | { agent: AgentWithUser; error: null; status: 200 }
@@ -15,7 +18,7 @@ async function getAuthorizedAgent(
 ): Promise<AuthorizedAgentResult> {
   const agent = await prisma.agent.findUnique({
     where: { id: agentId },
-    include: { user: true },
+    include: { user: true, mcpServers: true },
   });
 
   if (!agent) return { agent: null, error: "Agent not found", status: 404 };
@@ -53,6 +56,47 @@ function buildUserPrompt(
   return parts.join("\n\n");
 }
 
+async function generateOutput(
+  agent: AgentWithUser,
+  gemini: GeminiService,
+  userPrompt: string
+): Promise<string> {
+  const useMcp = agent.mcpEnabled && agent.mcpServers.length > 0;
+  if (!useMcp) {
+    return gemini.generate({
+      systemPrompt: agent.task,
+      temperature: agent.temperature,
+      userPrompt,
+    });
+  }
+
+  // Live discovery + SDK-driven tool loop. Fail-fast if a server is unreachable.
+  const session = await openMcpSession(agent.mcpServers);
+  try {
+    if (session.tools.length === 0) {
+      return await gemini.generate({
+        systemPrompt: agent.task,
+        temperature: agent.temperature,
+        userPrompt,
+      });
+    }
+
+    return await withTimeout(
+      gemini.generateWithTools({
+        systemPrompt: agent.task,
+        temperature: agent.temperature,
+        userPrompt,
+        tools: session.tools,
+        maxRounds: agent.maxToolRounds,
+      }),
+      agent.timeoutMs,
+      `Agent timed out after ${agent.timeoutMs}ms.`
+    );
+  } finally {
+    await session.close();
+  }
+}
+
 async function runAgent(
   agent: AgentWithUser,
   body: Record<string, unknown> | null
@@ -61,11 +105,7 @@ async function runAgent(
 
   const userPrompt = buildUserPrompt(agent, body);
 
-  const output = await gemini.generate({
-    systemPrompt: agent.task,
-    temperature: agent.temperature,
-    userPrompt,
-  });
+  const output = await generateOutput(agent, gemini, userPrompt);
 
   if (agent.outputSchema) {
     try {

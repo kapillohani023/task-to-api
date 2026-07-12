@@ -12,8 +12,9 @@ import { T2AButton } from "@/components/ui/T2AButton";
 import { T2ALoader } from "@/components/ui/T2ALoader";
 import { T2ACopyableInput } from "@/components/ui/T2ACopyableInput";
 import { T2AToast } from "@/components/ui/T2AToast";
-import { T2ATypography } from "@/components/ui/T2ATypography";
 import { DeleteAgentButton } from "@/components/dashboard/DeleteAgentButton";
+import { McpSection } from "@/components/agent/McpSection";
+import type { ClientMcpServer, McpConfig, McpServerInput } from "@/lib/mcp-types";
 import { ArrowLeft } from "lucide-react";
 
 type AgentFormValues = {
@@ -36,7 +37,49 @@ function getAgentFormValues(agent: Agent): AgentFormValues {
   };
 }
 
-export function AgentDetailPage({ agent }: { agent: Agent }) {
+function buildMcpConfig(agent: Agent, servers: ClientMcpServer[]): McpConfig {
+  return {
+    mcpEnabled: agent.mcpEnabled,
+    maxToolRounds: agent.maxToolRounds,
+    timeoutMs: agent.timeoutMs,
+    servers: servers.map((s) => ({
+      key: s.id,
+      id: s.id,
+      url: s.url,
+      headers: s.headerKeys.map((key) => ({ key, value: "" })),
+      headerKeys: s.headerKeys,
+      disabledTools: s.disabledTools,
+    })),
+  };
+}
+
+// The exact shape persisted on save — also used for dirty comparison.
+function toMcpPayload(config: McpConfig): {
+  mcpEnabled: boolean;
+  maxToolRounds: number;
+  timeoutMs: number;
+  servers: McpServerInput[];
+} {
+  return {
+    mcpEnabled: config.mcpEnabled,
+    maxToolRounds: config.maxToolRounds,
+    timeoutMs: config.timeoutMs,
+    servers: config.servers.map((s) => ({
+      id: s.id,
+      url: s.url,
+      headers: s.headers,
+      disabledTools: s.disabledTools,
+    })),
+  };
+}
+
+export function AgentDetailPage({
+  agent,
+  servers,
+}: {
+  agent: Agent;
+  servers: ClientMcpServer[];
+}) {
   const router = useRouter();
   const updateWithId = updateAgentAction.bind(null, agent.id);
   const [state, action, isPending] = useActionState(updateWithId, {
@@ -46,25 +89,45 @@ export function AgentDetailPage({ agent }: { agent: Agent }) {
   const [formValues, setFormValues] = useState<AgentFormValues>(() =>
     getAgentFormValues(agent)
   );
+  const [mcpConfig, setMcpConfig] = useState<McpConfig>(() =>
+    buildMcpConfig(agent, servers)
+  );
   const [showSavedToast, setShowSavedToast] = useState(false);
   const wasPendingRef = useRef(false);
 
   const initialValues = getAgentFormValues(agent);
+  const initialMcpPayload = JSON.stringify(toMcpPayload(buildMcpConfig(agent, servers)));
+  const mcpPayload = toMcpPayload(mcpConfig);
   const hasChanges =
     formValues.name !== initialValues.name ||
     formValues.task !== initialValues.task ||
     formValues.temperature !== initialValues.temperature ||
     formValues.inputSchema !== initialValues.inputSchema ||
     formValues.outputSchema !== initialValues.outputSchema ||
-    formValues.method !== initialValues.method;
+    formValues.method !== initialValues.method ||
+    JSON.stringify(mcpPayload) !== initialMcpPayload;
 
-  useEffect(() => {
+  // Re-sync local edits whenever freshly-saved data arrives as new props
+  // (e.g. after router.refresh()). Render-phase adjustment rather than an
+  // effect — see react.dev "adjusting state when a prop changes".
+  const propSignature = `${JSON.stringify(initialValues)}|${initialMcpPayload}`;
+  const [syncedSignature, setSyncedSignature] = useState(propSignature);
+  if (syncedSignature !== propSignature) {
+    setSyncedSignature(propSignature);
     setFormValues(getAgentFormValues(agent));
-  }, [agent]);
+    setMcpConfig(buildMcpConfig(agent, servers));
+  }
+
+  // Surface the "saved" toast on the pending→done transition. Render-phase
+  // detection (not an effect) so it doesn't trip cascading-render lint.
+  const [prevPending, setPrevPending] = useState(isPending);
+  if (prevPending !== isPending) {
+    setPrevPending(isPending);
+    if (prevPending && !isPending && state.success) setShowSavedToast(true);
+  }
 
   useEffect(() => {
     if (wasPendingRef.current && !isPending && state.success) {
-      setShowSavedToast(true);
       router.refresh();
     }
 
@@ -96,7 +159,7 @@ export function AgentDetailPage({ agent }: { agent: Agent }) {
       </header>
 
       <main className="mx-auto w-full max-w-2xl p-6">
-        <form action={action} className="flex flex-col gap-5">
+        <form id="agent-form" action={action} className="flex flex-col gap-5">
           <T2AInput
             id="name"
             name="name"
@@ -213,20 +276,30 @@ export function AgentDetailPage({ agent }: { agent: Agent }) {
             />
           </div>
 
-          {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+          {/* MCP config travels with the agent form via these hidden fields. */}
+          <input type="hidden" name="mcpEnabled" value={String(mcpConfig.mcpEnabled)} />
+          <input type="hidden" name="maxToolRounds" value={String(mcpConfig.maxToolRounds)} />
+          <input type="hidden" name="timeoutMs" value={String(mcpConfig.timeoutMs)} />
+          <input type="hidden" name="mcpServers" value={JSON.stringify(mcpPayload.servers)} />
 
-          <div className="flex items-center justify-between border-t-2 border-black pt-4">
-            <DeleteAgentButton
-              agentId={agent.id}
-              agentName={agent.name}
-              variant="generic"
-              onDeleted={() => router.push("/dashboard")}
-            />
-            <T2AButton type="submit" disabled={isPending || !hasChanges}>
-              {isPending ? <T2ALoader size="sm" /> : "Save Changes"}
-            </T2AButton>
-          </div>
+          {state.error && <p className="text-xs text-red-600">{state.error}</p>}
         </form>
+
+        <div className="mt-6">
+          <McpSection value={mcpConfig} onChange={setMcpConfig} disabled={isPending} />
+        </div>
+
+        <div className="mt-6 flex items-center justify-between border-t-2 border-black pt-4">
+          <DeleteAgentButton
+            agentId={agent.id}
+            agentName={agent.name}
+            variant="generic"
+            onDeleted={() => router.push("/dashboard")}
+          />
+          <T2AButton type="submit" form="agent-form" disabled={isPending || !hasChanges}>
+            {isPending ? <T2ALoader size="sm" /> : "Save Changes"}
+          </T2AButton>
+        </div>
       </main>
     </div>
   );

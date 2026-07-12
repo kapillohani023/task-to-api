@@ -28,11 +28,30 @@ model Agent {
   outputSchema  String
   method        String
   token         String   @unique
+  mcpEnabled    Boolean  @default(false)
+  maxToolRounds Int      @default(10)
+  timeoutMs     Int      @default(60000)
   createdAt     DateTime @default(now())
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mcpServers    McpServer[]
 
   @@index([userId])
   @@index([name])
   @@map("agents")
+}
+
+model McpServer {
+  id            String   @id @default(cuid())
+  url           String
+  // JSON-encoded array of { key, value } header pairs (secrets, write-only in UI)
+  headers       String   @default("[]")
+  // JSON-encoded array of tool names disabled for this server (opt-out; absent = enabled)
+  disabledTools String   @default("[]")
+  createdAt     DateTime @default(now())
+  agentId       String
+  agent         Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+  @@map("mcp_servers")
 }

@@ -10,7 +10,27 @@
       "Bash(/C/Program Files/nodejs/npm.cmd install:*)",
       "Bash(cmd.exe:*)",
       "Bash(powershell.exe:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(identify public/logo.png public/logo-192.png)",
+      "Bash(bun add *)",
+      "Bash(node -e \"const p=require\\('./node_modules/@modelcontextprotocol/sdk/package.json'\\); console.log\\(Object.keys\\(p.exports\\).filter\\(k=>k.includes\\('client'\\)||k.includes\\('Http'\\)||k.includes\\('http'\\)\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(bunx prisma *)",
+      "Bash(bun x *)",
+      "Bash(node -e \"const p=require\\('./node_modules/@modelcontextprotocol/sdk/package.json'\\); console.log\\(JSON.stringify\\(Object.keys\\(p.exports\\),null,0\\)\\)\")",
+      "Bash(node -e \"const p=require\\('./node_modules/@modelcontextprotocol/sdk/package.json'\\); console.log\\(JSON.stringify\\(p.exports['./*'],null,0\\)\\); console.log\\('---client---'\\); console.log\\(JSON.stringify\\(p.exports['./client'],null,0\\)\\)\")",
+      "Bash(bun run *)",
+      "Bash(bun \"C:\\\\Users\\\\KAPILL~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-Kapil-Lohani-Desktop-code-projects-task-to-api\\\\81834183-6ead-425e-939f-2b3deb1460a6\\\\scratchpad\\\\mcp-smoke.ts\")",
+      "Bash(cp \"C:\\\\Users\\\\KAPILL~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-Kapil-Lohani-Desktop-code-projects-task-to-api\\\\81834183-6ead-425e-939f-2b3deb1460a6\\\\scratchpad\\\\mcp-smoke.ts\" ./_smoke.ts)",
+      "Bash(sed -i 's|\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./\\\\.\\\\./Users/Kapil Lohani/Desktop/code/projects/task-to-api/lib/mcp|./lib/mcp|' ./_smoke.ts)",
+      "Bash(bun ./_smoke.ts)",
+      "Bash(node -e \"const {SchemaType}=require\\('./node_modules/@google/generative-ai/dist/index.js'\\); console.log\\(SchemaType.STRING, SchemaType.OBJECT, SchemaType.INTEGER, SchemaType.ARRAY\\)\")",
+      "Bash(sed -i 's/=== \"STRING\"/=== \"string\"/g; s/=== \"INTEGER\"/=== \"integer\"/g; s/=== \"ARRAY\"/=== \"array\"/g; s/=== \"OBJECT\"/=== \"object\"/g; s/type === \"ARRAY\"/type === \"array\"/g' ./_smoke.ts)",
+      "WebFetch(domain:ai.google.dev)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "Bash(node -e \"const p=require\\('./node_modules/@google/genai/package.json'\\); console.log\\(JSON.stringify\\(p.exports,null,0\\)\\)\")",
+      "Bash(bun remove *)",
+      "Bash(bun ./_smoke2.ts)"
     ]
   }
 }

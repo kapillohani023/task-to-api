@@ -5,6 +5,13 @@ export function getAgent(id: string) {
   return prisma.agent.findUnique({ where: { id } });
 }
 
+export function getAgentWithServers(id: string) {
+  return prisma.agent.findUnique({
+    where: { id },
+    include: { mcpServers: { orderBy: { createdAt: "asc" } } },
+  });
+}
+
 export function getAgentsByUser(userId: string) {
   return prisma.agent.findMany({
     where: { userId },
