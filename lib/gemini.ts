@@ -1,6 +1,6 @@
 import { GoogleGenAI, ApiError, type CallableTool } from "@google/genai";
 
-const TOOL_MODEL = "gemini-2.5-flash";
+const TOOL_MODEL = "gemini-3.1-flash-lite";
 
 export class GeminiService {
   private ai: GoogleGenAI;
