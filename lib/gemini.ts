@@ -1,6 +1,6 @@
 import { GoogleGenAI, ApiError, type CallableTool } from "@google/genai";
 
-const TOOL_MODEL = "gemini-3.1-flash-lite";
+export const TOOL_MODEL = "gemini-3.1-flash-lite";
 
 export class GeminiService {
   private ai: GoogleGenAI;
@@ -28,6 +28,7 @@ export class GeminiService {
     systemPrompt: string;
     temperature: number;
     userPrompt: string;
+    signal?: AbortSignal;
   }): Promise<string> {
     const response = await this.ai.models.generateContent({
       model: TOOL_MODEL,
@@ -35,6 +36,7 @@ export class GeminiService {
       config: {
         systemInstruction: options.systemPrompt,
         temperature: options.temperature,
+        abortSignal: options.signal,
       },
     });
     return response.text ?? "";
@@ -51,7 +53,24 @@ export class GeminiService {
     userPrompt: string;
     tools: CallableTool[];
     maxRounds: number;
+    signal?: AbortSignal;
   }): Promise<string> {
+    const { text } = await this.generateWithToolsDetailed(options);
+    return text;
+  }
+
+  /**
+   * Same call, but also reports how many tool rounds the SDK actually ran —
+   * the only round-level detail observable from outside the loop.
+   */
+  async generateWithToolsDetailed(options: {
+    systemPrompt: string;
+    temperature: number;
+    userPrompt: string;
+    tools: CallableTool[];
+    maxRounds: number;
+    signal?: AbortSignal;
+  }): Promise<{ text: string; rounds: number }> {
     const response = await this.ai.models.generateContent({
       model: TOOL_MODEL,
       contents: options.userPrompt,
@@ -60,8 +79,15 @@ export class GeminiService {
         temperature: options.temperature,
         tools: options.tools,
         automaticFunctionCalling: { maximumRemoteCalls: options.maxRounds },
+        abortSignal: options.signal,
       },
     });
-    return response.text ?? "";
+
+    // The AFC history holds one model turn + one function-response turn per
+    // round; counting model turns beyond the first gives the rounds executed.
+    const history = response.automaticFunctionCallingHistory ?? [];
+    const rounds = history.filter((c) => c.role === "model").length;
+
+    return { text: response.text ?? "", rounds };
   }
 }

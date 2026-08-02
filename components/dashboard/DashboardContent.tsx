@@ -6,7 +6,6 @@ import type { Agent } from "@prisma/client";
 import { AgentsGrid } from "./AgentsGrid";
 import { AddAgentButton } from "./AddAgentButton";
 import { T2ASegmented } from "@/components/ui/T2ASegmented";
-import { T2ASwitch } from "@/components/ui/T2ASwitch";
 import { T2AKbd } from "@/components/ui/T2AKbd";
 import { cn } from "@/lib/cn";
 import { fieldBase } from "@/lib/ui";
@@ -54,9 +53,9 @@ export function DashboardContent({ agents }: { agents: Agent[] }) {
         agent.id.toLowerCase().includes(q)
       );
     });
-  }, [agents, query, method, mcpOnly]);
+  }, [agents, query, method]);
 
-  const isFiltered = query.trim() !== "" || method !== "ALL" || mcpOnly;
+  const isFiltered = query.trim() !== "" || method !== "ALL";
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-6 md:px-6">
@@ -98,15 +97,6 @@ export function DashboardContent({ agents }: { agents: Agent[] }) {
               value={method}
               onChange={setMethod}
             />
-
-            <label className="flex cursor-pointer items-center gap-2 text-xs text-fg-muted">
-              <T2ASwitch
-                checked={mcpOnly}
-                onChange={setMcpOnly}
-                label="Show only agents with MCP tools"
-              />
-              MCP only
-            </label>
 
             <div className="ml-auto">
               <AddAgentButton label="New agent" />

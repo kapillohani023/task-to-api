@@ -197,7 +197,8 @@ every file in `components/ui/`. Fix the doc, not the code.)
 
 ### Dashboard `/dashboard`
 
-Toolbar row: search (`/` to focus) · method filter (`All / GET / POST`) · `MCP only` toggle · **New agent**.
+Toolbar row: search (`/` to focus) · method filter (`All / GET / POST`) · **New agent**.
+(An `MCP only` toggle was specced and built, then cut — the MCP chip on the card is enough.)
 Then the grid, `sm:2 lg:3 2xl:4`, `gap-3`.
 
 **Agent card**

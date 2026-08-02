@@ -270,7 +270,8 @@ export function AgentDetailPage({
                       never receives input. Switch to POST to use it.
                     </p>
                   )}
-                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                  {/* Side by side only where each editor still has room. */}
+                  <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                     <input
                       type="hidden"
                       name="inputSchema"

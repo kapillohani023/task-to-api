@@ -40,7 +40,10 @@ export function Breadcrumbs() {
   const onAgents = pathname === "/dashboard";
 
   return (
-    <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-sm">
+    <nav
+      aria-label="Breadcrumb"
+      className="flex min-w-0 flex-1 items-center gap-2 text-sm"
+    >
       <Link
         href="/dashboard"
         aria-current={onAgents ? "page" : undefined}

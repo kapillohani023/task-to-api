@@ -1,6 +1,7 @@
 import { Breadcrumbs } from "./Breadcrumbs";
 import { AccountMenu } from "./AccountMenu";
 import { GeminiKeyStatus } from "./GeminiKeyStatus";
+import { CommandTrigger } from "./CommandTrigger";
 
 export function Topbar({
   hasKey,
@@ -25,6 +26,7 @@ export function Topbar({
         </span>
         <Breadcrumbs />
         <div className="ml-auto flex items-center gap-2">
+          <CommandTrigger />
           <GeminiKeyStatus hasKey={hasKey} />
           <AccountMenu name={name} email={email} image={image} />
         </div>

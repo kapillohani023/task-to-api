@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Play } from "lucide-react";
 import type { Agent } from "@prisma/client";
 import { T2ACard } from "@/components/ui/T2ACard";
 import { T2ABadge } from "@/components/ui/T2ABadge";
@@ -63,7 +64,15 @@ export function AgentCard({ agent }: { agent: Agent }) {
             </T2ABadge>
           )}
         </div>
-        <div className="relative z-10">
+        <div className="relative z-10 flex items-center gap-1">
+          <Link
+            href={`/agent/${agent.id}/playground`}
+            title="Run in playground"
+            aria-label={`Run ${agent.name} in the playground`}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-fg-subtle transition-colors duration-[var(--dur-fast)] hover:bg-elevated hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+          >
+            <Play size={16} />
+          </Link>
           <DeleteAgentButton agentId={agent.id} agentName={agent.name} />
         </div>
       </div>

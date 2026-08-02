@@ -27,7 +27,8 @@ the `window.location.origin` read during render in `AgentDetailPage`.
 
 Each phase is independently shippable and leaves the app working.
 
-**Status:** Phase 0 ✅ · Phase 1 ✅ · Phase 2 ✅ · Phase 3 ✅ (2026-08-02) · Phase 4–5 pending.
+**Status:** all phases 0–5 shipped (2026-08-02). The revamp is complete; what follows is the
+record of how it was sequenced and which decisions were deliberate.
 Phase 1 shipped the token migration across every screen, so `bg-white` / `border-black` /
 `text-zinc-*` are now zero-occurrence in `app/` and `components/` — keep it that way.
 Phase 2 moved `/dashboard` and `/agent/[agentId]` under `app/(app)/` (URLs unchanged) behind a
@@ -36,12 +37,20 @@ Phase 3 split the detail page into Config / Schema / Tools / Integration tabs + 
 integration rail + a dirty-state save bar. **Tab panels holding form fields must stay mounted**
 (`T2ATabPanel keepMounted`) — an unmounted input contributes nothing to `FormData`, so
 unmounting the Config panel would silently blank `name`/`task` on save.
-Deferred by design, with the note of where they land:
-- `T2AJsonView` → Phase 4 (the playground's response renderer). `T2AJsonEditor` shipped in Phase 3.
-- Rail items for playground (▶) and settings (⚙) → added when those routes exist (Phase 4/5);
-  the rail renders only Agents today rather than dead nav.
-- The `⌘K` topbar trigger → Phase 5 with the palette itself, same reason.
-- The Run action on the agent card → Phase 4, when `/playground` exists.
+Phase 4 extracted `lib/run-agent.ts` (the public route now calls it with no listener, so its
+behaviour is unchanged), instrumented `openMcpSession` + the `callTool` wrapper, added the
+session-guarded NDJSON route `POST /api/agents/[agentId]/playground`, and built `/playground`
+and `/agent/[agentId]/playground`. **The trace only reports what is actually observable** —
+MCP connect/discovery, per-tool-call timing, generation start/end, round count from the AFC
+history. Do not invent per-token model detail; the SDK owns the loop.
+Phase 5 added the `⌘K` command palette (agents + navigation + a `?` keyboard map), the topbar
+search trigger, and a breakpoint pass.
+Still deliberately absent:
+- **Settings rail item** — there is no settings route; the rail shows Agents and Playground only.
+  Add the item with the route, never before, or it is dead nav.
+- **Run history across reloads** — out of scope; it needs an `AgentRun` model. History is
+  session state in the playground page.
+- **Light theme** — out of scope, as originally scoped.
 
 ### Phase 0 — Foundation (no visual change to logic)
 1. `app/globals.css`: replace the token block with MASTER §2, fix `body { font-family: var(--font-sans) }`,

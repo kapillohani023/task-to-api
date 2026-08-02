@@ -12,7 +12,6 @@ export default function Loading() {
         <div className="flex flex-wrap items-center gap-3">
           <T2ASkeleton className="h-9 min-w-[200px] flex-1" />
           <T2ASkeleton className="h-9 w-[180px] rounded-md" />
-          <T2ASkeleton className="h-5 w-24" />
           <T2ASkeleton className="ml-auto h-9 w-32 rounded-md" />
         </div>
       </div>
