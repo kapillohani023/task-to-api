@@ -43,6 +43,8 @@ export function DeleteAgentButton({
           variant="danger"
           size="icon"
           type="button"
+          aria-label={`Delete ${agentName}`}
+          title="Delete agent"
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
@@ -59,7 +61,7 @@ export function DeleteAgentButton({
           onClick={() => setOpen(true)}
         >
           <Trash2 size={16} />
-          Delete Agent
+          Delete agent
         </T2AButton>
       )}
       {open && (

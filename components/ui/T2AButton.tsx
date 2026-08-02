@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { focusRing } from "@/lib/ui";
 import { ButtonHTMLAttributes } from "react";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline" | "icon";
@@ -10,19 +11,24 @@ interface T2AButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary:   "border-2 border-black bg-black text-white hover:bg-zinc-800",
-  secondary: "border-2 border-black bg-white text-black hover:bg-zinc-100",
-  ghost:     "border-2 border-transparent bg-transparent text-black hover:bg-zinc-100",
-  danger:    "border-2 border-black bg-transparent text-black hover:bg-red-700 hover:text-white",
-  outline:   "border-2 border-black bg-transparent text-black hover:bg-zinc-100",
-  icon:      "border-2 border-transparent bg-transparent text-black hover:bg-zinc-100",
+  primary:
+    "border border-transparent bg-accent text-accent-fg hover:bg-accent-dim",
+  secondary:
+    "border border-border bg-elevated text-fg hover:border-border-strong",
+  ghost:
+    "border border-transparent bg-transparent text-fg-muted hover:bg-elevated hover:text-fg",
+  danger:
+    "border border-danger/40 bg-transparent text-danger hover:border-danger hover:bg-danger-bg",
+  outline:
+    "border border-border bg-transparent text-fg hover:border-border-strong hover:bg-elevated",
+  icon: "border border-transparent bg-transparent text-fg-muted hover:bg-elevated hover:text-fg",
 };
 
 const sizeClasses: Record<Size, string> = {
-  sm:   "px-3 py-1.5 text-sm",
-  md:   "px-4 py-2 text-base",
-  lg:   "px-5 py-3 text-base",
-  icon: "h-10 w-10 flex items-center justify-center",
+  sm: "h-8 px-3 text-sm",
+  md: "h-9 px-4 text-sm",
+  lg: "h-10 px-5 text-sm",
+  icon: "h-9 w-9",
 };
 
 export function T2AButton({
@@ -38,10 +44,14 @@ export function T2AButton({
       {...props}
       disabled={disabled}
       className={cn(
-        "cursor-pointer inline-flex items-center justify-center gap-2 rounded font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1",
+        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md font-medium",
+        "transition-colors duration-[var(--dur-fast)] ease-out active:translate-y-px",
+        // MASTER §6 — 44px minimum on coarse pointers.
+        "[@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11",
+        focusRing,
         variantClasses[variant],
         sizeClasses[size],
-        disabled && "cursor-not-allowed opacity-50",
+        disabled && "cursor-not-allowed opacity-50 active:translate-y-0",
         className
       )}
     >

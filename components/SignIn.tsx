@@ -9,11 +9,14 @@ export async function SignIn() {
   if (session) redirect("/dashboard");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <T2ACard variant="default" padding="lg" className="w-full max-w-sm">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-zinc-900">
-          T2A - Task to API
-        </h1>
+    <div className="flex min-h-screen items-center justify-center bg-base px-4">
+      <T2ACard padding="lg" className="w-full max-w-sm shadow-pop">
+        <div className="mb-6 flex flex-col items-center gap-1">
+          <h1 className="text-2xl font-semibold tracking-[-0.02em] text-fg">T2A</h1>
+          <p className="font-mono text-[13px] tracking-tight text-fg-subtle">
+            task → api
+          </p>
+        </div>
         <form
           action={async () => {
             "use server";
@@ -30,13 +33,13 @@ export async function SignIn() {
             Sign in with Google
           </T2AButton>
         </form>
-        <p className="mt-6 text-center text-xs text-zinc-500">
+        <p className="mt-6 text-center text-xs text-fg-subtle">
           By signing in, you agree to our{" "}
-          <a href="/terms" className="underline hover:text-zinc-700">
+          <a href="/terms" className="underline hover:text-fg-muted">
             Terms
           </a>{" "}
           and{" "}
-          <a href="/privacy" className="underline hover:text-zinc-700">
+          <a href="/privacy" className="underline hover:text-fg-muted">
             Privacy Policy
           </a>
           .

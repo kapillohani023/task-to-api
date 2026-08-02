@@ -28,9 +28,14 @@ export function GeminiKeyDialog({
   }, [state.success]);
 
   return (
-    <T2ADialog open={open} onClose={onClose ?? (() => {})} title={title}>
+    <T2ADialog
+      open={open}
+      onClose={onClose ?? (() => {})}
+      title={title}
+      dismissOnBackdrop={Boolean(onClose)}
+    >
       <form action={action} className="flex flex-col gap-4">
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-fg-muted">
           A valid Gemini API key is required to use T2A. Enter your key below.
         </p>
         <T2AInput

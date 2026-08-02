@@ -4,27 +4,27 @@ import { ArrowLeft } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
-    <div className="flex min-h-screen items-start justify-center bg-gray-50 py-10 px-4">
-      <T2ACard variant="default" padding="lg" className="w-full max-w-2xl">
+    <div className="flex min-h-screen items-start justify-center bg-base px-4 py-10">
+      <T2ACard padding="lg" className="w-full max-w-2xl">
         <Link
           href="/signin"
-          className="inline-flex items-center gap-1 text-sm font-medium text-zinc-700 hover:text-black transition-colors mb-6"
+          className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-fg-muted transition-colors hover:text-fg"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Sign In
         </Link>
 
-        <h1 className="text-4xl font-bold tracking-tight text-black mb-6">
+        <h1 className="text-4xl font-bold tracking-tight text-fg mb-6">
           Privacy Policy
         </h1>
 
-        <p className="text-sm text-zinc-500 mb-6">Last updated: April 12, 2026</p>
+        <p className="mb-6 text-sm text-fg-subtle">Last updated: April 12, 2026</p>
 
         <div className="space-y-6">
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">1. Information We Collect</h2>
-            <p className="text-base text-black leading-relaxed">When you use T2A, we collect:</p>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-base text-black">
+            <h2 className="text-xl font-semibold text-fg mb-2">1. Information We Collect</h2>
+            <p className="text-base text-fg leading-relaxed">When you use T2A, we collect:</p>
+            <ul className="list-disc list-inside mt-2 space-y-1 text-base text-fg">
               <li>
                 <span className="font-medium">Account information</span> &mdash; your name and
                 email address from Google Sign-In
@@ -41,9 +41,9 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">2. How We Use Your Information</h2>
-            <p className="text-base text-black leading-relaxed">Your information is used to:</p>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-base text-black">
+            <h2 className="text-xl font-semibold text-fg mb-2">2. How We Use Your Information</h2>
+            <p className="text-base text-fg leading-relaxed">Your information is used to:</p>
+            <ul className="list-disc list-inside mt-2 space-y-1 text-base text-fg">
               <li>Authenticate your identity and manage your account</li>
               <li>Execute your AI agents using your provided API key</li>
               <li>Display your agents and configurations on your dashboard</li>
@@ -51,17 +51,17 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">3. Data Storage</h2>
-            <p className="text-base text-black leading-relaxed">
+            <h2 className="text-xl font-semibold text-fg mb-2">3. Data Storage</h2>
+            <p className="text-base text-fg leading-relaxed">
               Your data is stored in a secured PostgreSQL database. API keys are stored as
               provided. We do not sell, share, or distribute your data to third parties.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">4. Third-Party Services</h2>
-            <p className="text-base text-black leading-relaxed">T2A integrates with:</p>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-base text-black">
+            <h2 className="text-xl font-semibold text-fg mb-2">4. Third-Party Services</h2>
+            <p className="text-base text-fg leading-relaxed">T2A integrates with:</p>
+            <ul className="list-disc list-inside mt-2 space-y-1 text-base text-fg">
               <li>
                 <span className="font-medium">Google OAuth</span> &mdash; for authentication
               </li>
@@ -70,14 +70,14 @@ export default function PrivacyPage() {
                 requests using your own API key
               </li>
             </ul>
-            <p className="text-base text-black leading-relaxed mt-2">
+            <p className="text-base text-fg leading-relaxed mt-2">
               These services have their own privacy policies. We encourage you to review them.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">5. Request Data</h2>
-            <p className="text-base text-black leading-relaxed">
+            <h2 className="text-xl font-semibold text-fg mb-2">5. Request Data</h2>
+            <p className="text-base text-fg leading-relaxed">
               T2A does not store the content of API requests made to your agents or the responses
               generated by the Gemini API. Request data is processed in memory and discarded after
               the response is returned.
@@ -85,16 +85,16 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">6. Data Deletion</h2>
-            <p className="text-base text-black leading-relaxed">
+            <h2 className="text-xl font-semibold text-fg mb-2">6. Data Deletion</h2>
+            <p className="text-base text-fg leading-relaxed">
               You can delete your agents at any time from the dashboard. Deleting your account
               will remove all associated data, including your agents and stored API key.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">7. Security</h2>
-            <p className="text-base text-black leading-relaxed">
+            <h2 className="text-xl font-semibold text-fg mb-2">7. Security</h2>
+            <p className="text-base text-fg leading-relaxed">
               We take reasonable measures to protect your data. Agent endpoints are secured with
               bearer token authentication. However, no system is completely secure and we cannot
               guarantee absolute protection.
@@ -102,8 +102,8 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-black mb-2">8. Changes to This Policy</h2>
-            <p className="text-base text-black leading-relaxed">
+            <h2 className="text-xl font-semibold text-fg mb-2">8. Changes to This Policy</h2>
+            <p className="text-base text-fg leading-relaxed">
               We may update this privacy policy from time to time. Changes will be reflected on
               this page with an updated date. Continued use of the service constitutes acceptance
               of the revised policy.

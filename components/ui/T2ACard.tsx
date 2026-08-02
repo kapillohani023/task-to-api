@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 import { HTMLAttributes } from "react";
 
-type Variant = "default" | "subtle" | "elevated";
+type Variant = "surface" | "inset" | "elevated";
 type Padding = "none" | "sm" | "md" | "lg";
 
 interface T2ACardProps extends HTMLAttributes<HTMLDivElement> {
@@ -10,20 +10,20 @@ interface T2ACardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  default:  "border-2 border-black bg-white",
-  subtle:   "border border-zinc-200 bg-white",
-  elevated: "border-2 border-black bg-white shadow-lg",
+  surface: "border border-border bg-surface",
+  inset: "border border-border bg-inset",
+  elevated: "border border-border bg-elevated shadow-pop",
 };
 
 const paddingClasses: Record<Padding, string> = {
   none: "",
-  sm:   "p-3",
-  md:   "p-4",
-  lg:   "p-6",
+  sm: "p-3",
+  md: "p-4",
+  lg: "p-5",
 };
 
 export function T2ACard({
-  variant = "default",
+  variant = "surface",
   padding = "md",
   className,
   children,
@@ -33,7 +33,7 @@ export function T2ACard({
     <div
       {...props}
       className={cn(
-        "rounded-lg",
+        "rounded-md",
         variantClasses[variant],
         paddingClasses[padding],
         className

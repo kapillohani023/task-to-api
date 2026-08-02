@@ -1,27 +1,48 @@
 import { cn } from "@/lib/cn";
 import React, { HTMLAttributes } from "react";
 
-type Variant = "h1" | "h2" | "h3" | "h4" | "body" | "label" | "muted" | "caption";
+type Variant =
+  | "display"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "body"
+  | "label"
+  | "muted"
+  | "caption"
+  | "mono";
 
 interface T2ATypographyProps extends HTMLAttributes<HTMLElement> {
   variant?: Variant;
   as?: keyof React.JSX.IntrinsicElements;
 }
 
+// MASTER §2 typography roles. 14px body — this is a dense tool, not a marketing page.
 const variantClasses: Record<Variant, string> = {
-  h1:      "text-4xl font-bold tracking-tight text-black",
-  h2:      "text-3xl font-semibold tracking-tight text-black",
-  h3:      "text-2xl font-semibold text-black",
-  h4:      "text-xl font-semibold text-black",
-  body:    "text-base text-black",
-  label:   "text-sm font-medium text-zinc-700",
-  muted:   "text-sm text-zinc-600",
-  caption: "text-xs text-zinc-500",
+  display: "text-2xl font-semibold leading-tight tracking-[-0.02em] text-fg",
+  h1: "text-2xl font-semibold leading-tight tracking-[-0.02em] text-fg",
+  h2: "text-lg font-semibold tracking-[-0.01em] text-fg",
+  h3: "text-sm font-semibold text-fg",
+  h4: "text-sm font-semibold text-fg",
+  body: "text-sm text-fg",
+  label: "text-xs font-medium uppercase tracking-[0.08em] text-fg-muted",
+  muted: "text-sm text-fg-muted",
+  caption: "text-xs text-fg-subtle",
+  mono: "font-mono text-[13px] tracking-tight text-fg-muted",
 };
 
 const defaultTag: Record<Variant, keyof React.JSX.IntrinsicElements> = {
-  h1: "h1", h2: "h2", h3: "h3", h4: "h4",
-  body: "p", label: "span", muted: "p", caption: "span",
+  display: "h1",
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+  h4: "h4",
+  body: "p",
+  label: "span",
+  muted: "p",
+  caption: "span",
+  mono: "span",
 };
 
 export function T2ATypography({
@@ -34,7 +55,7 @@ export function T2ATypography({
   const Tag = (as ?? defaultTag[variant]) as keyof React.JSX.IntrinsicElements;
   return (
     // @ts-expect-error dynamic tag
-    <Tag {...props} className={cn("leading-relaxed", variantClasses[variant], className)}>
+    <Tag {...props} className={cn(variantClasses[variant], className)}>
       {children}
     </Tag>
   );

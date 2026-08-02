@@ -1,28 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Design system: design-system/t2a/MASTER.md §2 — "Console."
+   Dark is the default and only mode at launch. Never write a raw hex in a component. */
+@theme {
+  /* ---- surfaces ---- */
+  --color-base:      #020617;  /* page background            */
+  --color-surface:   #0B1120;  /* cards, panels              */
+  --color-elevated:  #111A2E;  /* dialogs, popovers, hover   */
+  --color-inset:     #060D1B;  /* code blocks, input wells   */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ---- structure ---- */
+  --color-border:        #1E293B;              /* default hairline     */
+  --color-border-subtle: rgb(148 163 184/.10); /* inside dense groups  */
+  --color-border-strong: #334155;              /* focus-adjacent, heads */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* ---- text ---- */
+  --color-fg:        #F8FAFC;  /* headings, primary          */
+  --color-fg-muted:  #94A3B8;  /* labels, secondary  8.9:1   */
+  --color-fg-subtle: #64748B;  /* captions, hints    5.0:1   */
+
+  /* ---- accent: "live" ---- */
+  --color-accent:      #22C55E;
+  --color-accent-fg:   #04140A;  /* text ON accent, 12.4:1   */
+  --color-accent-dim:  #16A34A;  /* pressed                  */
+  --color-accent-glow: rgb(34 197 94/.18);
+
+  /* ---- semantic ---- */
+  --color-info:      #38BDF8;
+  --color-warn:      #FBBF24;
+  --color-danger:    #F87171;   /* on dark, 400 not 500      */
+  --color-danger-bg: rgb(248 113 113/.12);
+
+  /* ---- HTTP method (never color-only — always paired with the text) ---- */
+  --color-method-get:  #38BDF8;
+  --color-method-post: #FBBF24;
+
+  /* ---- syntax (JSON viewer) ---- */
+  --color-syn-key:    #7DD3FC;
+  --color-syn-string: #86EFAC;
+  --color-syn-number: #FBBF24;
+  --color-syn-bool:   #C4B5FD;
+  --color-syn-null:   #64748B;
+  --color-syn-punct:  #475569;
+
+  /* ---- type ---- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  /* ---- radius ---- */
+  --radius-sm: 6px;    /* badges, chips, inputs   */
+  --radius-md: 10px;   /* buttons, cards          */
+  --radius-lg: 14px;   /* dialogs, panels         */
+
+  /* ---- elevation: rings first, shadows barely ---- */
+  --shadow-panel: 0 1px 0 0 rgb(255 255 255/.03) inset;
+  --shadow-pop:   0 16px 40px -12px rgb(2 6 23/.8);
+  --shadow-glow:  0 0 0 1px var(--color-accent-glow), 0 8px 24px -8px var(--color-accent-glow);
+
+  /* ---- motion ---- */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:   120ms;   /* hover, press          */
+  --dur-base:   200ms;   /* enter, expand         */
+  --dur-slow:   320ms;   /* dialog, pane          */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Helvetica, Arial, sans-serif;
+  background: var(--color-base);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+/* Keyframes referenced by `animate-[…]` utilities in components. */
+@keyframes t2a-loader {
+  from { transform: scaleY(1); opacity: 0.6; }
+  to   { transform: scaleY(1.5); opacity: 1; }
+}
+
+@keyframes t2a-dialog-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes t2a-toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes t2a-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes t2a-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
 }
 
 /* Custom Scrollbar */
@@ -36,12 +108,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: black;
+  background: var(--color-border-strong);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #333;
+  background: var(--color-fg-subtle);
 }
 
 ::-webkit-scrollbar-button {
@@ -55,5 +127,17 @@ body {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: black transparent;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+/* MASTER §5 — every animation is opt-out-able. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

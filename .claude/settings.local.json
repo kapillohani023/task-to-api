@@ -30,7 +30,13 @@
       "WebFetch(domain:cdn.jsdelivr.net)",
       "Bash(node -e \"const p=require\\('./node_modules/@google/genai/package.json'\\); console.log\\(JSON.stringify\\(p.exports,null,0\\)\\)\")",
       "Bash(bun remove *)",
-      "Bash(bun ./_smoke2.ts)"
+      "Bash(bun ./_smoke2.ts)",
+      "Read(//c/Users/Kapil Lohani/.agents/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"developer tool AI agent API platform SaaS dark technical console\" --design-system -p \"T2A\" --variance 6 --motion 5 --density 8)",
+      "Bash(python scripts/search.py \"technical developer console dark grid mono\" --domain style -n 3)",
+      "Bash(python scripts/search.py \"server actions streaming suspense\" --stack nextjs -n 5)",
+      "Bash(python scripts/search.py \"developer tool API console agent testing dark technical\" --design-system --persist -p \"T2A\" --page \"playground\" --variance 6 --motion 5 --density 8 --output-dir \"C:/Users/Kapil Lohani/Desktop/code/projects/task-to-api\" -f markdown)",
+      "Artifact"
     ]
   }
 }

@@ -1,4 +1,6 @@
 import { cn } from "@/lib/cn";
+import { fieldBase, fieldDisabled, typeHint, typeLabel } from "@/lib/ui";
+import { AlertCircle } from "lucide-react";
 import { SelectHTMLAttributes } from "react";
 
 interface T2ADropDownOption {
@@ -25,19 +27,21 @@ export function T2ADropDown({
   ...props
 }: T2ADropDownProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       {label && (
-        <label htmlFor={id} className="text-sm font-medium text-zinc-700">
+        <label htmlFor={id} className={typeLabel}>
           {label}
         </label>
       )}
       <select
         {...props}
         id={id}
+        aria-invalid={error ? true : undefined}
         className={cn(
-          "w-full rounded border-2 border-black bg-white px-4 py-2 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-black",
-          error && "border-red-600 focus:ring-red-600",
-          props.disabled && "cursor-not-allowed bg-zinc-100 opacity-60",
+          fieldBase,
+          "h-9 cursor-pointer px-3 text-sm",
+          error && "border-danger focus:border-danger focus:ring-danger/40",
+          props.disabled && fieldDisabled,
           className
         )}
       >
@@ -47,13 +51,18 @@ export function T2ADropDown({
           </option>
         )}
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
+          <option key={opt.value} value={opt.value} className="bg-surface">
             {opt.label}
           </option>
         ))}
       </select>
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      {hint && !error && <p className="text-xs text-zinc-500">{hint}</p>}
+      {error && (
+        <p className="flex items-center gap-1.5 text-xs text-danger">
+          <AlertCircle size={12} aria-hidden />
+          {error}
+        </p>
+      )}
+      {hint && !error && <p className={typeHint}>{hint}</p>}
     </div>
   );
 }

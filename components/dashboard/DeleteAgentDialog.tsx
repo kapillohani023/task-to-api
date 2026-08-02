@@ -4,6 +4,7 @@ import { T2ADialog } from "@/components/ui/T2ADialog";
 import { T2AButton } from "@/components/ui/T2AButton";
 import { T2ALoader } from "@/components/ui/T2ALoader";
 import { T2ATypography } from "@/components/ui/T2ATypography";
+import { AlertCircle } from "lucide-react";
 
 interface DeleteAgentDialogProps {
   agentName: string;
@@ -21,13 +22,24 @@ export function DeleteAgentDialog({
   error,
 }: DeleteAgentDialogProps) {
   return (
-    <T2ADialog open={true} onClose={isPending ? () => {} : onClose} title="Delete Agent">
+    <T2ADialog
+      open={true}
+      onClose={isPending ? () => {} : onClose}
+      title="Delete agent"
+      dismissOnBackdrop={!isPending}
+    >
       <div className="flex flex-col gap-4">
-        <T2ATypography variant="body">
-          Are you sure you want to delete <strong>{agentName}</strong>? This action cannot be
-          undone.
+        <T2ATypography variant="muted">
+          Are you sure you want to delete{" "}
+          <strong className="font-mono text-[13px] text-fg">{agentName}</strong>? This
+          action cannot be undone.
         </T2ATypography>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && (
+          <p className="flex items-center gap-1.5 text-xs text-danger">
+            <AlertCircle size={12} aria-hidden />
+            {error}
+          </p>
+        )}
         <div className="flex justify-end gap-2">
           <T2AButton variant="secondary" type="button" onClick={onClose} disabled={isPending}>
             Cancel

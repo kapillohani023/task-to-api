@@ -1,6 +1,7 @@
 import { auth } from "@/app/auth";
 import { notFound, redirect } from "next/navigation";
 import { getAgentWithServers } from "@/lib/agent";
+import { getBaseUrl } from "@/lib/base-url";
 import { parseHeaders, parseDisabledTools } from "@/lib/mcp";
 import { AgentDetailPage } from "@/components/agent/AgentDetailPage";
 
@@ -28,5 +29,13 @@ export default async function AgentPage({
   const { mcpServers, ...agentFields } = agent;
   void mcpServers; // relation carries header secrets — excluded from client props
 
-  return <AgentDetailPage agent={agentFields} servers={clientServers} />;
+  const baseUrl = await getBaseUrl();
+
+  return (
+    <AgentDetailPage
+      agent={agentFields}
+      servers={clientServers}
+      baseUrl={baseUrl}
+    />
+  );
 }
