@@ -189,7 +189,10 @@ every file in `components/ui/`. Fix the doc, not the code.)
 └────┴─────────────────────────────────────────────────────────┘
 ```
 
-- Rail collapses to a bottom sheet trigger < `md`. Rail items are icon + `title` + `aria-label`, active
+- Below `md` the rail becomes a **bottom bar** (`MobileNav`) carrying the same items — a layout
+  sibling, not `fixed`, so full-height panes can subtract its 56px. (Specced as a bottom sheet
+  trigger; a bar won because with two destinations a sheet is a tap for nothing.)
+  Rail items are icon + `title` + `aria-label`, active
   item gets a 2px accent left-bar **and** full-opacity icon (never color alone).
 - Topbar carries breadcrumbs (`agents / <name>`), a `⌘K` command trigger, the Gemini-key status dot
   (`accent` = set, `warn` = missing → opens `GeminiKeyDialog`), and the account menu (sign out moves here,

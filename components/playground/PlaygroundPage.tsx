@@ -117,7 +117,8 @@ export function PlaygroundPage({
   );
 
   return (
-    <div className="flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden">
+    // Viewport minus the topbar, and minus the mobile nav bar below `md`.
+    <div className="flex h-[calc(100dvh-7rem)] flex-col overflow-hidden md:h-[calc(100dvh-3.5rem)]">
       <div className="grid min-h-0 flex-1 grid-cols-1 overflow-y-auto lg:grid-cols-2 lg:overflow-hidden xl:grid-cols-[280px_1fr_1fr]">
         <aside className="hidden min-h-0 overflow-y-auto border-r border-border px-4 py-4 xl:block">
           {agentPane}

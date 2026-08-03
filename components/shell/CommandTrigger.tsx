@@ -16,14 +16,15 @@ export function CommandTrigger() {
       onClick={palette.open}
       aria-label="Open command palette"
       className={cn(
-        "hidden h-8 cursor-pointer items-center gap-2 rounded-md border border-border bg-inset pl-2.5 pr-2 text-sm text-fg-subtle",
-        "transition-colors duration-[var(--dur-fast)] hover:border-border-strong hover:text-fg-muted sm:inline-flex",
+        "inline-flex h-8 cursor-pointer items-center gap-2 rounded-md border border-border bg-inset px-2 text-sm text-fg-subtle sm:pl-2.5",
+        "transition-colors duration-[var(--dur-fast)] hover:border-border-strong hover:text-fg-muted",
         focusRingSurface
       )}
     >
       <Search size={13} aria-hidden />
       <span className="hidden md:inline">Search</span>
-      <T2AKbd>⌘K</T2AKbd>
+      {/* The key hint is noise on touch, where there is no ⌘. */}
+      <T2AKbd className="hidden sm:inline-flex">⌘K</T2AKbd>
     </button>
   );
 }

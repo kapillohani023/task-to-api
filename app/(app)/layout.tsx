@@ -4,6 +4,7 @@ import { getUser } from "@/lib/user";
 import { getAgentsByUser } from "@/lib/agent";
 import { Topbar } from "@/components/shell/Topbar";
 import { AppRail } from "@/components/shell/AppRail";
+import { MobileNav } from "@/components/shell/MobileNav";
 import { BreadcrumbProvider } from "@/components/shell/Breadcrumbs";
 import { CommandPalette } from "@/components/shell/CommandPalette";
 
@@ -37,6 +38,7 @@ export default async function AppLayout({
             <AppRail />
             <div className="min-w-0 flex-1">{children}</div>
           </div>
+          <MobileNav />
         </div>
       </CommandPalette>
     </BreadcrumbProvider>
