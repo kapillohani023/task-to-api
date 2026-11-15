@@ -1,0 +1,14 @@
+# Copy to .github/workflows/deploy.yml in github.com/kapillohani023/task-to-api
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: kapillohani023/deploy/.github/workflows/app-deploy.yml@main
+    with:
+      service: task-to-api
+    secrets: inherit

@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+.vercel
+.arena
+.claude
+coverage
+*.md
+AGENTS.md
+CLAUDE.md
+eslint.config.mjs
+.prettierrc
+.DS_Store
